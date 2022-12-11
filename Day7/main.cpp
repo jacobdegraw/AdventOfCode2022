@@ -8,7 +8,7 @@ using namespace std;
 
 
 
-
+//FILE CLASS
 class File{
 private:
     string name;
@@ -33,6 +33,9 @@ public:
     }
 };
 
+
+
+//DIRECTORY CLASS
 class Directory {
 private:
     string name;
@@ -115,6 +118,8 @@ public:
 
 };
 
+
+//MAIN FUNCTION
 int main(int argc, char** argv) {
 
     //Open the file so we can parse
