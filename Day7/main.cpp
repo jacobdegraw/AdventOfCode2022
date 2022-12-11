@@ -1,3 +1,5 @@
+/* Made by Jake DeGraw on 12/10/2022 */
+
 #include <iostream>
 #include <fstream>
 #include <set>
@@ -8,7 +10,7 @@ using namespace std;
 
 
 
-//FILE CLASS
+/* **FILE CLASS** */
 class File{
 private:
     string name;
@@ -35,7 +37,8 @@ public:
 
 
 
-//DIRECTORY CLASS
+
+/* **DIRECTORY CLASS** */
 class Directory {
 private:
     string name;
@@ -98,6 +101,22 @@ public:
         return sum;
     }
 
+    long int count2(long int& toDelete, long int& spaceNeeded){
+        long int sum = 0;
+        for (auto file : files){
+            sum += file.getSize();
+        }
+        for (auto dir : directories){
+            sum += dir->count2(toDelete, spaceNeeded);
+        }
+        if (sum >= spaceNeeded && sum < toDelete){
+            toDelete = sum;
+        }
+
+
+        return sum;
+    }
+
     set<Directory*> getDirectories() { return directories; }
 
     string getName() { return name; }
@@ -119,7 +138,9 @@ public:
 };
 
 
-//MAIN FUNCTION
+
+
+/* **MAIN FUNCTION** */
 int main(int argc, char** argv) {
 
     //Open the file so we can parse
@@ -202,11 +223,27 @@ int main(int argc, char** argv) {
     cout << home->toString() << endl;
     cout << dir->toString();
 
+
+    //Part 1
     long int total = 0;
-    home->count(total);
+    long int sum = home->count(total);
+    cout << endl << "Total of all directories <= 100000: " << total << endl;
 
-    cout << "Total is: " << total << endl;
 
+    //Part 2
+    //Initialize toDelete as sum so we know that it is bigger than whatever will come out out the function
+    long int toDelete = sum;
+    long int unusedSpace = 70000000 - sum;
+    long int spaceNeeded = 30000000 - unusedSpace;
+    cout << endl <<"Space needed: " << spaceNeeded << endl;
+
+    home->count2(toDelete, spaceNeeded);
+
+    if (toDelete == sum){
+        cout << "Something went wrong dummy" << endl;
+    } else {
+        cout << "Size of directory to delete: " << toDelete << endl;
+    }
 
 
     return 0;
